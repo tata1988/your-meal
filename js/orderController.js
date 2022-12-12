@@ -22,12 +22,17 @@ export const orderController = (getCart) => {
             method: "POST",
             body: JSON.stringify(data),
         }).then(response => response.json())
-            .then(data => {
+            .then(response => {
                 clearCart()
-                modalDeliveryContainer.insertAdjacentHTML('beforeend', `
+                modalDeliveryContainer.innerHTML = `
                 <h2>Спасибо большое за заказ!</h2>
-                <h3></h3>
-                `)
+                <h3>Ваш номер заказа ${response.id}</h3>
+                <p>С вами в ближайшее время свяжется наш менеджер ${response.manager}</p>
+                <p>Ваш заказ:</p>
+                `;
+                const ul = document.createElement('ul');
+                data.order.forEach(item => { ul.insertAdjacentHTML('beforeend', `<li>${item.id}</li>`) });
+                modalDeliveryContainer.insertAdjacentElement('beforeend', ul);
                 /* modalDeliveryForm.reset();
                 checkDelivery(); */
             });
